@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+{% block title %}Create New List{% endblock %}
+{% block content %}
+<h3>Create Page</h3>
+    <form method="post" action="/create/" class="form-group">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <button type="submit" name="save" class="btn btn-success">Create New</button>   
+            <input type="text" value="" name = "name" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+        </div>
+    </form>
+{% endblock %}
