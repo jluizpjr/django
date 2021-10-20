@@ -49,12 +49,8 @@
                 <div class="col-8">
                     <h1 class="mt-2">Rancher Test App</h1>
                     <hr class="mt-0 mb-4">
-                    {% if user.is_authenticated %}
-                        {% block content %}
-                        {% endblock %}
-                    {% else %}
-                        <p>Login <a href="/login">here</a></p>
-                    {% endif %}
+                    {% block content %}
+                    {% endblock %}
                 </div>
             </div>
         </div>
