@@ -7,7 +7,8 @@
     <form method="post" action="#">
         {% csrf_token %}
         <ol class="list-group list-group-numbered">
-            {% for list in ll %}
+
+            {% for list in user.todolist.all %}
             <li class="list-group-item d-flex justify-content-between align-items-start">
               <div class="ms-2 me-auto">
                 <div class="fw-bold"><a href="/{{list.id}}">{{list.name}}</a></div>

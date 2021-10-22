@@ -7,44 +7,46 @@ from .forms import CreateNewList
 def index(response,id):
     ls = ToDoList.objects.get(id=id)
 
-    if response.method == "POST":
-        print(response.POST)
-        
-        
-        if response.POST.get("save"):
-            for item in ls.item_list.all():
-                if response.POST.get("c" + str(item.id)) == "clicked":
-                    item.complete = True
-                else:
-                    item.complete = False
-                
-                item.save()
+    if ls in response.user.todolist.all():
 
-        elif response.POST.get("newItem"):
-            txt = response.POST.get("new")
-
-            if len(txt) > 3:
-                ls.item_list.create(text=txt, complete=False)
-            else:
-                print("Invalid Input")
-
-        elif response.POST.get("delete"):
+        if response.method == "POST":
             print(response.POST)
-            print("Got DELETE")
+        
+            if response.POST.get("save"):
+                for item in ls.item_list.all():
+                    if response.POST.get("c" + str(item.id)) == "clicked":
+                        item.complete = True
+                    else:
+                        item.complete = False
+                    
+                    item.save()
 
-            for item in ls.item_list.all():
-                if response.POST.get("delete") == ("delete" + str(item.id)):
-                    print("Calling delete")
-                    item.delete()
+            elif response.POST.get("newItem"):
+                txt = response.POST.get("new")
 
-    return render(response, "main/list.html", {"ls":ls})
+                if len(txt) > 3:
+                    ls.item_list.create(text=txt, complete=False)
+                else:
+                    print("Invalid Input")
+
+            elif response.POST.get("delete"):
+                print(response.POST)
+                print("Got DELETE")
+
+                for item in ls.item_list.all():
+                    if response.POST.get("delete") == ("delete" + str(item.id)):
+                        print("Calling delete")
+                        item.delete()
+
+        return render(response, "main/list.html", {"ls":ls})
+    return render(response, "main/lists.html", {})
 
 def home(response):
     return render(response, "main/home.html", {})
 
 def lists(response):
-    ll = ToDoList.objects.filter()
-    return render(response, "main/lists.html", {"ll":ll})
+    #ll = ToDoList.objects.filter()
+    return render(response, "main/lists.html", {})
 
 def create(response):
     
@@ -55,6 +57,8 @@ def create(response):
             n = form.cleaned_data["name"]
             t = ToDoList(name=n)
             t.save()
+            response.user.todolist.add(t)
+
 
             return HttpResponseRedirect("/%i" %t.id)
 
